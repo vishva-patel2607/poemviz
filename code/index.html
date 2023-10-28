@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scrollytelling Poems</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1 class="title">Crowded Rooms and Quiet Homes</h1>
+    </header>
+    <main class="wrapper">
+      <div class="left-column">
+        <div class="left-column-content">
+          <!-- TODO Add filler verse divs so that the content is centered vertically even at the start -->
+          <div class="filler-verse"></div>
+          <ul class="verse" id="verse1">
+            <li class="line" id="line1">I still remember the cold december night</li>
+            <li class="line" id="line2">How warm my friends house was and</li>
+            <li class="line" id="line3">How comforting was the lamps warm white light,</li>
+            <li class="line" id="line4">My friend was hosting a party and needed a hand</li>
+            <li class="line" id="line5">Trying to luminate the dull rental walls with festival light,</li>
+            <li class="line" id="line6">Soon enough the house was filled with faces and voices</li>
+            <li class="line" id="line7">Talking, Laughing, Gasping and making all sorts of noises.</li>
+          </ul>
+
+          <ul class="verse" id="verse2">
+            <li class="line" id="line1">I took a chair and sat with a jolly group</li>
+            <li class="line" id="line2">Introduced myself hoping to find someone new,</li>
+            <li class="line" id="line3">They greeted me with a smile and a lot of compassion</li>
+            <li class="line" id="line4">But they were already lost in stories that I barely knew,</li>
+            <li class="line" id="line5">Soon the voices turned into hum and my mind buzzed with confusion</li>
+            <li class="line" id="line6">The room was not warm anymore and the lights faced occlusion,</li>
+            <li class="line" id="line7">I asked myself, “When did this clique turn into a crowd?”</li>
+          </ul>
+
+          <ul class="verse" id="verse3">
+            <li class="line" id="line1">Today, I was not alone but lonely</li>
+          </ul>
+
+          <ul class="verse" id="verse4">
+            <li class="line" id="line1">I still remember the hot july morning,</li>
+            <li class="line" id="line2">How cold my own house was and </li>
+            <li class="line" id="line3">How energizing was the suns playful light,</li>
+            <li class="line" id="line4">I made myself a brunch listening to my favorite band</li>
+            <li class="line" id="line5">Trying to catch up with the tunes while getting the words right,</li>
+            <li class="line" id="line6">Soon I had nothing to do and was out of choices</li>
+            <li class="line" id="line7">Singing, Tapping, Clapping and making all sorts of noises.</li>
+          </ul>
+
+          <ul class="verse" id="verse5">
+            <li class="line" id="line1">I took a book and sat with my glasses on</li>
+            <li class="line" id="line2">Picked up where I left off hoping to reach the epilogue,</li>
+            <li class="line" id="line3">Poured myself a fresh cup of coffee and had some cookies on the side</li>
+            <li class="line" id="line4">Read a few pages before I was lost in stories those printed words hide</li>
+            <li class="line" id="line5">Soon, the cup was empty but my thoughts flowed like a riptide</li>
+            <li class="line" id="line6">The sun was bright, and my hope was amplified</li>
+            <li class="line" id="line7">I asked myself,  “When did my house turn into a home?”</li>
+          </ul>
+
+          <ul class="verse" id="verse6">
+            <li class="line" id="line1">Today, I was alone but not lonely</li>
+          </ul>
+          <div class="filler-verse"></div>
+        </div>
+      </div>
+      <div class="right-column">
+        <svg id="svg"></svg>
+      </div>
+    </main>
+    <footer>
+      <button class="arrow-button" id="backward-button">◄</button>
+      <button class="arrow-button" id="forward-button">►</button>
+    </footer>
+    <script src="main.js"></script>
+  </body>
+</html>
