@@ -116,7 +116,7 @@ document.getElementById("backward-button").addEventListener("click", backwardCli
 // Done - TODO call that in our initalise function
 async function loadData() {
     // Because d3.json() uses promises we have to use the keyword await to make sure each line completes before moving on to the next line
-    await d3.csv("./data/data.csv").then(data => {
+    await d3.csv("https://vishva-patel2607.github.io/data/data.csv").then(data => {
         // Inside the promise we set the global variable equal to the data being loaded from the file
         
         chartData = data;
