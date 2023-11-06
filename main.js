@@ -97,8 +97,8 @@ function unhighlightColourAll() {
 
 // Done - TODO define global variables
 let svg = d3.select("#svg");
-const width = 750;
-const height = 450;
+const width = 780;
+const height = 600;
 let chart;
 let chartWidth;
 let chartHeight;
@@ -107,8 +107,10 @@ let yScale;
 let chartData;
 let violetChartData;
 let barClickFlag = false;
+let scrollPosition;
 
 // Done - TODO add event listeners to the buttons
+
 document.getElementById("forward-button").addEventListener("click", forwardClicked);
 document.getElementById("backward-button").addEventListener("click", backwardClicked);
 
@@ -123,6 +125,7 @@ async function loadData() {
         console.log(chartData);
     });
 }
+
 
 
 
@@ -208,7 +211,7 @@ function initialiseSVG(){
 
     svg.selectAll("*").remove();
 
-    const margin = { top: 50, right: 30, bottom: 50, left: 50 };
+    const margin = { top: 80, right: 30, bottom: 50, left: 50 };
     chartWidth = width - margin.left - margin.right;
     chartHeight = height - margin.top - margin.bottom;
 
@@ -240,11 +243,38 @@ function initialiseSVG(){
 
     // Add title
     svg.append("text")
-        .attr("id", "chart-title")
-        .attr("x", width / 2)
+        .attr("id", "chart-title-title")
+        .attr("x",25 )
         .attr("y", 30)
-        .attr("text-anchor", "middle")
-        .style("font-size", "18px")
+        .attr("text-anchor", "right")
+        .style("font-size", "20px")
+        .style("fill", "white")
+        .text("");
+
+    svg.append("text")
+        .attr("id", "chart-title-title2")
+        .attr("x",25 )
+        .attr("y", 55)
+        .attr("text-anchor", "right")
+        .style("font-size", "20px")
+        .style("fill", "white")
+        .text("");
+
+    svg.append("text")
+        .attr("id", "chart-title-daterange")
+        .attr("x",width/2)
+        .attr("y", 55)
+        .attr("text-anchor", "right")
+        .style("font-size", "20px")
+        .style("fill", "white")
+        .text("");
+
+    svg.append("text")
+        .attr("id", "chart-title-category")
+        .attr("x",width/2 )
+        .attr("y", 30)
+        .attr("text-anchor", "right")
+        .style("font-size", "20px")
         .style("fill", "white")
         .text("");
 
@@ -259,16 +289,16 @@ function drawFirstGraph() {
 
     if(keyframes[keyframeIndex].activeVerse == 1){
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 42 && obj.Group == "National Estimate"})
-        drawLineGraph(filteredData, "December 2021 - February 2022");
+        drawLineGraph(filteredData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - February 2022","National Average"]);
     }else if(keyframes[keyframeIndex].activeVerse == 2 || keyframes[keyframeIndex].activeVerse == 3){
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 45 && obj.Group == "National Estimate"})
-        drawLineGraph(filteredData, "December 2021 - May 2022");
+        drawLineGraph(filteredData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - May 2022","National Average"]);
     }else if(keyframes[keyframeIndex].activeVerse == 4){
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 48 && obj.Group == "National Estimate"})
-        drawLineGraph(filteredData, "December 2021 - August 2022");
+        drawLineGraph(filteredData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - August 2022","National Average"]);
     }else{
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 51 && obj.Group == "National Estimate"})
-        drawLineGraph(filteredData, "December 2021 - November 2022");
+        drawLineGraph(filteredData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - November 2022","National Average"]);
     }
     
     
@@ -286,11 +316,11 @@ function drawSecondGraph() {
             object[state] = 0;
             }
             
-            object[state] += (value/12);
+            object[state] += (value/3);
             return object;
         }, {})).map(data => {return {'State':data[0],'Value':data[1]}});
     
-        drawMap(mergedData, "December 2021 - February 2022 By State");
+        drawMap(mergedData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - February 2022","Average By States"]);
     }else if(keyframes[keyframeIndex].activeVerse == 2 || keyframes[keyframeIndex].activeVerse == 3){
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 45 && obj.Group == "By State"});
         var mergedData = Object.entries(filteredData.reduce((object, item) => {
@@ -300,11 +330,11 @@ function drawSecondGraph() {
             object[state] = 0;
             }
             
-            object[state] += (value/12);
+            object[state] += (value/6);
             return object;
         }, {})).map(data => {return {'State':data[0],'Value':data[1]}})
         
-        drawMap(mergedData, "December 2021 - May 2022 By State");
+        drawMap(mergedData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - May 2022","Average By States"]);
     }else if(keyframes[keyframeIndex].activeVerse == 4){
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 48 && obj.Group == "By State"});
         var mergedData = Object.entries(filteredData.reduce((object, item) => {
@@ -314,11 +344,11 @@ function drawSecondGraph() {
             object[state] = 0;
             }
             
-            object[state] += (value/12);
+            object[state] += (value/9);
             return object;
         }, {})).map(data => {return {'State':data[0],'Value':data[1]}})
         
-        drawMap(mergedData, "December 2021 - August 2022 By State");
+        drawMap(mergedData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - August 2022","Average By States"]);
     }else{
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 51 && obj.Group == "By State"});
         var mergedData = Object.entries(filteredData.reduce((object, item) => {
@@ -332,7 +362,7 @@ function drawSecondGraph() {
             return object;
         }, {})).map(data => {return {'State':data[0],'Value':data[1]}})
         
-        drawMap(mergedData, "December 2021 - November 2022 By State");
+        drawMap(mergedData,["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - November 2022","Average By States"]);
     }
     
 
@@ -352,11 +382,11 @@ function drawThirdGraph() {
             object[state] = 0;
             }
             
-            object[state] += (value/12);
+            object[state] += (value/3);
             return object;
         }, {})).map(data => {return {'Subgroup':data[0],'Value':data[1]}});
         console.log(mergedData);
-        drawBubbles(mergedData, "December 2021 - February 2022 By Gender");
+        drawBubbles(mergedData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - February 2022","Average By Gender"]);
     }else if(keyframes[keyframeIndex].activeVerse == 2 || keyframes[keyframeIndex].activeVerse == 3){
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 45 && obj.Group == "By Gender identity"});
         var mergedData = Object.entries(filteredData.reduce((object, item) => {
@@ -366,11 +396,11 @@ function drawThirdGraph() {
             object[state] = 0;
             }
             
-            object[state] += (value/12);
+            object[state] += (value/6);
             return object;
         }, {})).map(data => {return {'Subgroup':data[0],'Value':data[1]}})
         
-        drawBubbles(mergedData, "December 2021 - May 2022 By Gender");
+        drawBubbles(mergedData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - May 2022","Average By Gender"]);
     }else if(keyframes[keyframeIndex].activeVerse == 4){
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 48 && obj.Group == "By Gender identity"});
         var mergedData = Object.entries(filteredData.reduce((object, item) => {
@@ -380,11 +410,11 @@ function drawThirdGraph() {
             object[state] = 0;
             }
             
-            object[state] += (value/12);
+            object[state] += (value/9);
             return object;
         }, {})).map(data => {return {'Subgroup':data[0],'Value':data[1]}})
         
-        drawBubbles(mergedData, "December 2021 - August 2022 By Gender");
+        drawBubbles(mergedData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - August 2022","Average By Gender"]);
     }else{
         let filteredData = chartDataCopy.filter((obj) => {return obj.Indicator == "Symptoms of Depressive Disorder" && parseInt(obj['Time Period']) >= 40 && parseInt(obj['Time Period']) <= 51 && obj.Group == "By Gender identity"});
         var mergedData = Object.entries(filteredData.reduce((object, item) => {
@@ -398,7 +428,7 @@ function drawThirdGraph() {
             return object;
         }, {})).map(data => {return {'Subgroup':data[0],'Value':data[1]}})
         
-        drawBubbles(mergedData, "December 2021 - November 2022 By Gender");
+        drawBubbles(mergedData, ["Symptoms of Depressive Disorder","Mental Health Pulse Survey Values","December 2021 - November 2022","Average By Gender"]);
     }
 }
 
@@ -432,6 +462,8 @@ function highlightColour(colourName, highlightColour) {
 }
 
 function drawMap(data, title = ""){
+
+    
     const margin = { top: 30, right: 30, bottom: 50, left: 50 };
     chartWidth = width - margin.left - margin.right;
     chartHeight = height - margin.top - margin.bottom;
@@ -440,11 +472,19 @@ function drawMap(data, title = ""){
     initialiseSVG();
     chart.selectAll("*").remove();
 
-    let colorScale = d3.scaleLinear()
+    let colorScale1 = d3.scaleLinear()
                 .domain(d3.extent(data, d => parseFloat(d.Value)))
-                .range([255,127]);
+                .range([255,213]);
 
-  const projection = d3.geoAlbersUsa().translate([width/2,height/2]).scale(700);
+    let colorScale2 = d3.scaleLinear()
+                .domain(d3.extent(data, d => parseFloat(d.Value)))
+                .range([255,196]);
+
+    let colorScale3 = d3.scaleLinear()
+                .domain(d3.extent(data, d => parseFloat(d.Value)))
+                .range([255,171]);
+
+  const projection = d3.geoAlbersUsa().translate([width/2,height/2]).scale(900);
   const pathGenerator = d3.geoPath().projection(projection);
 
   
@@ -452,8 +492,12 @@ function drawMap(data, title = ""){
     d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then((mapdata) => {
         const states = topojson.feature(mapdata, mapdata.objects.states);
         //console.log(states);
+
+        var div = d3.select(".right-column").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
     
-        chart
+        let map = chart
           .selectAll('path')
           .data(states.features)
           .enter()
@@ -461,33 +505,123 @@ function drawMap(data, title = ""){
           .attr('class', 'state')
           
           .attr('d', pathGenerator)
+          .attr("transform", "translate(" + -margin.left + "," + -margin.top + ")")
+          .attr('fill', "rgb("+255+","+255+","+255+")")
+          .style('stroke','#665f3b')
+          .style("stroke-opacity", 0.4);
+          
+        map.transition()
+          .duration(2000)
           .attr('fill', function(d){
             //console.log(d.properties.name);
             
             let value = data.filter((obj) => {return obj.State == d.properties.name});
             if (value.length > 0){
                 //console.log(value[0].Value);
-                let r = colorScale(value[0].Value);
+                let r = colorScale1(value[0].Value);
+                let g = colorScale2(value[0].Value);
+                let b = colorScale3(value[0].Value);
                 console.log()
-                return "rgb("+102+","+r+","+59+")";
+                return "rgb("+r+","+g+","+b+")";
             }else{
                 return "rgb("+0+","+0+","+0+")";
             }
             
           })
-          .attr("transform", "translate(" + -margin.left + "," + -margin.top + ")");
+        
+        map.on('mouseover', function (event, d) {
+
+            const[x, y] = d3.pointer(event);
+            //x = event.currentTarget.offsetLeft;
+            //y = event.currentTarget.offsetTop;
+
+            //console.log(x);
+            d3.select(this).transition()
+                 .duration('50')
+                 .attr('fill', '#665f3b');
+
+               div.transition()
+               .duration(50)
+               .style("opacity", 1);
+
+               
+               let value = data.filter((obj) => {return obj.State == d.properties.name});
+               console.log(value);
+               div.html(d.properties.name+"<br>"+(Math.round((value[0].Value + Number.EPSILON) * 100) / 100))
+                .style("left", (event.clientX + 15) + "px")
+                .style("top", (event.clientY - 20) + "px");
+                
+        })
+        .on('mouseout', function (d, i) {
+            d3.select(this).transition()
+                .duration('50')
+                .attr('fill', function(d){
+                    //console.log(d.properties.name);
+                    
+                    let value = data.filter((obj) => {return obj.State == d.properties.name});
+                    if (value.length > 0){
+                        //console.log(value[0].Value);
+                        let r = colorScale1(value[0].Value);
+                        let g = colorScale2(value[0].Value);
+                        let b = colorScale3(value[0].Value);
+                        console.log()
+                        return "rgb("+r+","+g+","+b+")";
+                    }else{
+                        return "rgb("+0+","+0+","+0+")";
+                    }
+                    
+                  });
+
+            div.transition()
+                .duration(50)
+                .style("opacity", 0);
+                
+        });
     });
 
     if (title.length > 0) {
-        svg.select("#chart-title")
-            .style("fill",'#665f3b')
-            .text(title);
+        svg.select("#chart-title-title")
+                .style("fill",'#665f3b')
+                .text(title[0]);
+
+            svg.select("#chart-title-title2")
+                .style("fill",'#665f3b')
+                .text(title[1]);
+
+            svg.select("#chart-title-daterange")
+                .style("fill",'#665f3b')
+                .transition()
+                .duration(1000)
+                .text(title[2]);
+
+            svg.select("#chart-title-category")
+                .style("fill",'#665f3b')
+                .transition()
+                .duration(1000)
+                .text(title[3]);
     }
 
 }
 
 function drawLineGraph(data, title = ""){
-    svg.selectAll("*").remove();
+
+    const margin = { top: 50, right: 30, bottom: 50, left: 50 };
+    chartWidth = width - margin.left - margin.right;
+    chartHeight = height - margin.top - margin.bottom;
+
+    xScale.domain(data.map(d => d['Subgroup']));
+    //xScale.domain(data.map(d => d['Time Period']));
+    let sizeScale = d3.scaleLinear()
+                .domain(d3.extent(data, d => parseFloat(d.Value)))
+                .range([0.2,0.8]);
+    
+    chart.selectAll('path')
+        .transition()
+        .duration(2000)
+        .style('scale',0);
+
+    //svg.selectAll("*").remove();
+    
     initialiseSVG();
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -507,7 +641,12 @@ function drawLineGraph(data, title = ""){
         .y(d => yScale(parseFloat(d.Value))) 
         .curve(d3.curveLinear)
 
+    var div = d3.select(".right-column").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
     bars.enter().append("path")
+        .interrupt()
         .datum(data) 
         .attr("class", "line") 
     //.attr("transform", "translate(" + 100 + "," + 100 + ")")
@@ -516,25 +655,94 @@ function drawLineGraph(data, title = ""){
         .style("stroke", "#665f3b")
         .style("stroke-width", "2");
 
+
+
+    
+    d3.selectAll("path")
+        .attr("stroke-dashoffset", 1700)
+        .attr("stroke-dasharray", 1700)
+        .transition()
+        .ease(d3.easeSin)
+        .duration(2500)
+        .attr("stroke-dashoffset", 0);
+
     bars.enter().append("circle")
         .attr("class", "bar")
         .attr("cx", d => xScale(monthNames[d3.timeParse("%m/%d/%Y")(d['Time Period End Date']).getMonth()]) + xScale.bandwidth()/2)
         .attr("cy", d => yScale(parseFloat(d.Value))) // Update the y value so that the bar is in the right location vertically
-        .attr("r", 4)
+        .attr("r", 5)
         //.attr("transform", "translate(" + 100 + "," + 100 + ")")
-        .attr("fill", "#665f3b");
+        .attr("fill", "#d5c4ab")
+        .on('mouseover', function (event, d) {
+
+            const[x, y] = d3.pointer(event);
+            //x = event.currentTarget.offsetLeft;
+            //y = event.currentTarget.offsetTop;
+
+            //console.log(x);
+            console.log(event.clientY);
+            console.log(event.clientX);
+            d3.select(this).transition()
+                 .duration('50')
+                 .attr('fill', '#665f3b')
+                 .attr('r',10);
+
+                 div.transition()
+               .duration(50)
+               .style("opacity", 1);
+
+               div.html(monthNames[d3.timeParse("%m/%d/%Y")(d['Time Period End Date']).getMonth()]+"<br>"+d.Value)
+                .style("left", (event.clientX + 15) + "px")
+                .style("top", (event.clientY - 20) + "px");
+                
+        })
+        .on('mouseout', function (d, i) {
+            d3.select(this).transition()
+                .duration('50')
+                .attr('fill', '#d5c4ab')
+                .attr('r',5);
+
+            div.transition()
+                .duration(50)
+                .style("opacity", 0);
+                
+        });
 
 
     chart.select(".x-axis")
-        .call(d3.axisBottom(xScale).tickSizeOuter(0,0));
+        .call(d3.axisBottom(xScale));
 
     chart.select(".y-axis")
-        .call(d3.axisLeft(yScale));
+        .call(d3.axisLeft(yScale).tickSize(-chartWidth).ticks(8));
+
+    chart.select(".y-axis").select('.domain')
+        .remove();
+
+    chart.select(".x-axis").selectAll(".tick").select('line')
+        .remove();
+
+    
 
     if (title.length > 0) {
-            svg.select("#chart-title")
+            svg.select("#chart-title-title")
                 .style("fill",'#665f3b')
-                .text(title);
+                .text(title[0]);
+
+            svg.select("#chart-title-title2")
+                .style("fill",'#665f3b')
+                .text(title[1]);
+
+            svg.select("#chart-title-daterange")
+                .style("fill",'#665f3b')
+                .transition()
+                .duration(1000)
+                .text(title[2]);
+
+            svg.select("#chart-title-category")
+                .style("fill",'#665f3b')
+                .transition()
+                .duration(1000)
+                .text(title[3]);
         }
 
 
@@ -572,33 +780,176 @@ function drawBubbles(data, title = ""){
     chart.select(".domain")
         .remove();
 
+    var div = d3.select(".right-column").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+    
+
     let plan_d="m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47"
 
     let male_d="M 61.374 0 v 6.039 h 18.318 L 57.823 27.907 c -6.124 -5.16 -14.022 -8.278 -22.638 -8.278 C 15.784 19.63 0 35.414 0 54.815 C 0 74.216 15.784 90 35.185 90 s 35.185 -15.784 35.185 -35.185 c 0 -8.616 -3.118 -16.514 -8.278 -22.638 l 21.869 -21.869 v 18.318 H 90 V 0 H 61.374 z M 35.185 83.961 c -16.071 0 -29.147 -13.075 -29.147 -29.146 c 0 -16.071 13.075 -29.147 29.147 -29.147 s 29.147 13.075 29.147 29.147 C 64.332 70.886 51.257 83.961 35.185 83.961 z";
     let trans_d="M 67.238 0 v 6 h 7.545 L 60.421 20.362 c -4.227 -3.26 -9.517 -5.205 -15.255 -5.205 c -5.823 0 -11.184 2.004 -15.441 5.351 l -4.38 -4.38 l 5.273 -5.273 l -4.242 -4.242 l -5.273 5.273 L 15.217 6 h 7.545 V 0 H 4.975 v 17.788 h 6 v -7.545 l 5.885 5.885 L 11.587 21.4 l 4.242 4.242 l 5.273 -5.273 l 4.38 4.38 c -3.347 4.257 -5.351 9.618 -5.351 15.441 c 0 12.788 9.641 23.36 22.035 24.848 v 7.59 h -7.457 v 6 h 7.457 V 90 h 6 V 78.63 h 7.456 v -6 h -7.456 v -7.59 C 60.56 63.552 70.2 52.979 70.2 40.191 c 0 -5.908 -2.062 -11.34 -5.497 -15.627 l 14.322 -14.322 v 7.545 h 6 V 0 H 67.238 z M 45.166 59.226 c -10.496 0 -19.035 -8.539 -19.035 -19.034 c 0 -10.496 8.539 -19.035 19.035 -19.035 c 10.495 0 19.034 8.539 19.034 19.035 C 64.2 50.687 55.661 59.226 45.166 59.226 z";
     let female_d="M 75.016 71.038 H 47.968 v -12.16 c 6.544 -0.655 12.91 -3.481 17.912 -8.484 c 11.513 -11.513 11.513 -30.246 0 -41.759 c -11.513 -11.514 -30.247 -11.514 -41.759 0 c -11.514 11.513 -11.514 30.246 0 41.759 c 5.002 5.003 11.368 7.829 17.912 8.484 v 12.16 H 14.984 v 5.935 h 27.049 V 90 h 5.935 V 76.973 h 27.048 V 71.038 z M 28.317 12.831 c 4.6 -4.6 10.642 -6.899 16.683 -6.899 c 6.042 0 12.083 2.3 16.683 6.899 c 9.199 9.199 9.199 24.167 0 33.366 c -9.199 9.198 -24.167 9.198 -33.367 0 C 19.118 36.999 19.118 22.03 28.317 12.831 z";
-    chart.select(".symbol_0").append("path")
+    let male_chart = chart.select(".symbol_0").append("path")
             .attr('d',male_d)
-            .attr("transform", "translate(" + (xScale(data[0]['Subgroup']) + xScale.bandwidth()/2 - 256*sizeScale(data[0].Value)*0.5)/(2.81*sizeScale(data[0].Value)) + "," + (height/2 - 256*sizeScale(data[0].Value)*0.5)/(sizeScale(data[0].Value)*2.81) + ")")
-            .style("scale",2.81*sizeScale(data[0].Value))
-            .style("fill", "#665f3b");
-    chart.select(".symbol_1").append("path")
-            .attr('d',female_d)
-            .style("scale",2.81*sizeScale(data[1].Value))
-            .attr("transform", "translate(" + (xScale(data[1]['Subgroup']) + xScale.bandwidth()/2 - 256*sizeScale(data[1].Value)*0.5)/(2.81*sizeScale(data[1].Value)) + "," + (height/2 - 256*sizeScale(data[1].Value)*0.5)/(sizeScale(data[1].Value)*2.81) + ")")
-            .style("fill", "#665f3b");
+            .style("scale",0)
+            .style("fill", "#dbbca1")
+            .style('stroke', '#665f3b')
+            .style('stroke-opacity',0.4)
+            .attr("transform", "translate(" + (xScale(data[0]['Subgroup']) + xScale.bandwidth()/2 - 256*sizeScale(data[0].Value)*0.5)/(2.81*sizeScale(data[0].Value)) + "," + (height/2 - 256*sizeScale(data[0].Value)*0.5)/(sizeScale(data[0].Value)*2.81) + ")");
+            
+    male_chart.transition()
+            .duration(1000)
+            .style("scale",2.81*sizeScale(data[0].Value));
+            
+            
+    male_chart.on('mouseover', function (event, d) {
 
-    chart.select(".symbol_2").append("path")
+                const[x, y] = d3.pointer(event);
+                //x = event.currentTarget.offsetLeft;
+                //y = event.currentTarget.offsetTop;
+    
+                //console.log(x);
+                console.log(event.clientY);
+                console.log(event.clientX);
+                d3.select(this).transition()
+                     .duration('50')
+                     .style('fill', '#665f3b');
+    
+                div.transition()
+                   .duration(50)
+                   .style("opacity", 1);
+    
+                div.html("Male<br>"+(Math.round((d.Value + Number.EPSILON) * 100) / 100))
+                    .style("left", (event.clientX + 15) + "px")
+                    .style("top", (event.clientY - 20) + "px");
+                    
+            })
+            .on('mouseout', function (d, i) {
+                d3.select(this).transition()
+                    .duration('50')
+                    .style('fill', '#dbbca1');
+    
+                div.transition()
+                    .duration(50)
+                    .style("opacity", 0);
+                    
+            });
+    
+    let female_chart = chart.select(".symbol_1").append("path")
+            .attr('d',female_d)
+            .style("scale",0)
+            .style('stroke', '#665f3b')
+            .style('stroke-opacity',0.4)
+            .style("fill", "#dbbca1")
+            .attr("transform", "translate(" + (xScale(data[1]['Subgroup']) + xScale.bandwidth()/2 - 256*sizeScale(data[1].Value)*0.5)/(2.81*sizeScale(data[1].Value)) + "," + (height/2 - 256*sizeScale(data[1].Value)*0.5)/(sizeScale(data[1].Value)*2.81) + ")")
+            
+    female_chart.transition()
+            .duration(1000)
+            .style("scale",2.81*sizeScale(data[1].Value));
+
+    female_chart.on('mouseover', function (event, d) {
+
+                const[x, y] = d3.pointer(event);
+                //x = event.currentTarget.offsetLeft;
+                //y = event.currentTarget.offsetTop;
+    
+                //console.log(x);
+                console.log(event.clientY);
+                console.log(event.clientX);
+                d3.select(this).transition()
+                     .duration('50')
+                     .style('fill', '#665f3b');
+    
+                div.transition()
+                   .duration(50)
+                   .style("opacity", 1);
+    
+                div.html("Female<br>"+(Math.round((d.Value + Number.EPSILON) * 100) / 100))
+                    .style("left", (event.clientX + 15) + "px")
+                    .style("top", (event.clientY - 20) + "px");
+                    
+            })
+            .on('mouseout', function (d, i) {
+                d3.select(this).transition()
+                    .duration('50')
+                    .style('fill', '#dbbca1');
+    
+                div.transition()
+                    .duration(50)
+                    .style("opacity", 0);
+                    
+            });
+            
+
+    let trans_chart = chart.select(".symbol_2").append("path")
             .attr('d',trans_d)
-            .style("scale",2.81*sizeScale(data[2].Value))
+            .style("scale",0)
+            .style("fill", "#dbbca1")
+            .style('stroke', '#665f3b')
+            .style('stroke-opacity',0.4)
+            .attr("transform", "translate(" + (xScale(data[0]['Subgroup']) + xScale.bandwidth()/2 - 256*sizeScale(data[0].Value)*0.5)/(2.81*sizeScale(data[0].Value)) + "," + (height/2 - 256*sizeScale(data[0].Value)*0.5)/(sizeScale(data[0].Value)*2.81) + ")");
+            
+    trans_chart.transition()
+            .duration(1000)
             .attr("transform", "translate(" + (xScale(data[2]['Subgroup']) + xScale.bandwidth()/2 - 256*sizeScale(data[2].Value)*0.5)/(2.81*sizeScale(data[2].Value)) + "," + (height/2 - 256*sizeScale(data[2].Value)*0.5)/(sizeScale(data[2].Value)*2.81) + ")")
-            .style("fill", "#665f3b");
+            .style("scale",2.81*sizeScale(data[2].Value));
+
+    trans_chart.on('mouseover', function (event, d) {
+
+                const[x, y] = d3.pointer(event);
+                //x = event.currentTarget.offsetLeft;
+                //y = event.currentTarget.offsetTop;
+    
+                //console.log(x);
+                console.log(event.clientY);
+                console.log(event.clientX);
+                d3.select(this).transition()
+                     .duration('50')
+                     .style('fill', '#665f3b');
+    
+                div.transition()
+                   .duration(50)
+                   .style("opacity", 1);
+    
+                div.html("Transgender<br>"+(Math.round((d.Value + Number.EPSILON) * 100) / 100))
+                    .style("left", (event.clientX + 15) + "px")
+                    .style("top", (event.clientY - 20) + "px");
+                    
+            })
+            .on('mouseout', function (d, i) {
+                d3.select(this).transition()
+                    .duration('50')
+                    .style('fill', '#dbbca1');
+    
+                div.transition()
+                    .duration(50)
+                    .style("opacity", 0);
+                    
+            });
+            
 
     
     if (title.length > 0) {
-        svg.select("#chart-title")
-            .style("fill",'#665f3b')
-            .text(title);
+        svg.select("#chart-title-title")
+                .style("fill",'#665f3b')
+                .text(title[0]);
+
+            svg.select("#chart-title-title2")
+                .style("fill",'#665f3b')
+                .text(title[1]);
+
+            svg.select("#chart-title-daterange")
+                .style("fill",'#665f3b')
+                .transition()
+                .duration(1000)
+                .text(title[2]);
+
+            svg.select("#chart-title-category")
+                .style("fill",'#665f3b')
+                .transition()
+                .duration(1000)
+                .text(title[3]);
     }
 
     
@@ -656,7 +1007,33 @@ function drawInfoGraphics(){
         .attr("text-anchor", "middle")
         .style("font-size", "18px")
         .style("fill", "#665f3b")
-        .text("Please contact +1-866-903-3787");
+        .text("Please contact");
+
+    svg.append("text")
+        .attr("id", "phone-title")
+        .attr("x", width / 2)
+        .attr("y", height / 2 + 80)
+        .attr("text-anchor", "middle")
+        .style("font-size", "18px")
+        .style("fill", "#665f3b")
+        .text("+1-866-903-3787")
+        .on('mouseover', function (event, d){
+            d3.select(this).transition()
+                     .duration('50')
+                     .style('font-size', '60px')
+                     .attr("y",height / 2 + 120);
+        })
+        .on('mouseout', function (event, d){
+            d3.select(this).transition()
+                     .duration('50')
+                     .style('font-size', '20px')
+                     .attr("y",height / 2 + 80);
+        })
+        .on('click', function (event, d) {
+
+            
+            window.open("tel:+14253400989")
+        });
 
 
 

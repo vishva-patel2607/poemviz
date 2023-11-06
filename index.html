@@ -11,7 +11,10 @@
       <h1 class="title">Crowded Rooms and Quiet Homes</h1>
     </header>
     <main class="wrapper">
-      <div class="left-column">
+      <div class="right-column">
+        <svg id="svg"></svg>
+      </div>
+      <div class="left-column" id="scrollview">
         <div class="left-column-content">
           <!-- TODO Add filler verse divs so that the content is centered vertically even at the start -->
           <div class="filler-verse"></div>
@@ -65,13 +68,22 @@
           <div class="filler-verse"></div>
         </div>
       </div>
-      <div class="right-column">
-        <svg id="svg"></svg>
-      </div>
+      
     </main>
     <footer>
-      <button class="arrow-button" id="backward-button">◄</button>
-      <button class="arrow-button" id="forward-button">►</button>
+
+      <main class="wrapper">
+        <div class="right-column-footer">
+          <div class="footer-text">
+            Data Source : <a href="https://www.cdc.gov/nchs/covid19/pulse/mental-health.htm" target="_blank">https://www.cdc.gov/nchs/covid19/pulse/mental-health.htm</a>
+          </div>
+        </div>
+        <div class="left-column-footer" >
+          <button class="arrow-button" id="backward-button">◄</button>
+          <button class="arrow-button" id="forward-button">►</button>
+        </div>
+      </main>
+      
     </footer>
     <script src="main.js"></script>
   </body>
